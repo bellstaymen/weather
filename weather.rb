@@ -45,5 +45,12 @@ client = TweetStream::Client.new.track('@yourID') do |status|
         tweet = "@#{status.user.screen_name} #{weather} "
         restclient.favorite(status.id)
         restclient.update(tweet, :in_reply_to_status_id => status.id)
+    elsif text =~ /^.*[[:blank:]]*[@＠]yourID[[:blank:]]*tomorrow_weather[[:blank:]]*/
+        new_text = text.gsub(/^.*[[:blank:]]*[@＠]yourID[[:blank:]]*tomorrow_weather[[:blank:]]*/,"")
+        a  = WeatherJp.get(new_text)
+        weather = a.tomorrow.to_s
+        tweet = "@#{status.user.screen_name} #{weather} "
+        restclient.favorite(status.id)
+        restclient.update(tweet, :in_reply_to_status_id => status.id)
     end
 end
